@@ -21,12 +21,12 @@ def estimate_focus_area(image, text_position=(10, 30)):
     sharpness_score = quantify_image_sharpness_ssim(image)
 
     text_focus = f"Focus: {focus_percentage:.2f}%"
-    text_sharpness = f"Sharpness: {sharpness_score:.2f}"
+    #text_sharpness = f"Sharpness: {sharpness_score:.2f}"
 
     cv2.putText(focus_area_image, text_focus, text_position, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
                 cv2.LINE_AA)
-    cv2.putText(focus_area_image, text_sharpness, (text_position[0], text_position[1] + 30), cv2.FONT_HERSHEY_SIMPLEX,
-                1, (255, 255, 255), 2, cv2.LINE_AA)
+    #cv2.putText(focus_area_image, text_sharpness, (text_position[0], text_position[1] + 30), cv2.FONT_HERSHEY_SIMPLEX,
+    #            1, (255, 255, 255), 2, cv2.LINE_AA)
 
     return focus_area_image
 
@@ -45,10 +45,10 @@ def highlight_focus_area(image):
     overlay = cv2.cvtColor(normalized_gradient.astype(np.uint8), cv2.COLOR_GRAY2BGR)
 
     # Define a color for the overlay (e.g., green)
-    color = (0, 255, 0)
+    color = (255, 0, 0)
 
     # Create a binary mask for the focus area
-    focus_mask = normalized_gradient > 100  # Adjust the threshold as needed
+    focus_mask = normalized_gradient > 80  # Adjust the threshold as needed
 
     # Apply the color overlay only to the focus area
     output_image = image.copy()
@@ -148,7 +148,7 @@ def quantify_image_sharpness_blur_index(image):
 
 
 # Example usage
-image_path = "test8_4.jpg"
+image_path = "img/test5.jpg"
 original_image = cv2.imread(image_path)
 
 # Get the images
@@ -156,7 +156,7 @@ focus_area_image = estimate_focus_area(original_image)
 highlighted_focus_area_image = highlight_focus_area(original_image)
 
 # Resize the original image while maintaining the aspect ratio
-desired_width = 2800
+desired_width = 1800
 aspect_ratio = original_image.shape[1] / original_image.shape[0]
 desired_height = int(desired_width / (3 * aspect_ratio))
 
